@@ -6,4 +6,4 @@ RUN apk update \
 
 COPY dyndns.py /usr/local/bin/dyndns.py
 
-CMD python3 /usr/local/bin/dyndns.py
+ENTRYPOINT [ "python3", "/usr/local/bin/dyndns.py" ]

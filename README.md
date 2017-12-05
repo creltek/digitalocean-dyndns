@@ -1,11 +1,11 @@
-## Build Image
+#### Build Image
 
 ```
 $ docker build -t creltek/digitalocean-dyndns ./
 ```
 
-## Run Container
+#### Run Container
 
 ```
-$ docker run -d --name digitalocean-dyndns -e HOST=home -e DOMAIN=creltek.com -e KEY=$(access_token) creltek/digitalocean-dyndns
+$ docker run -d --name dyndns creltek/digitalocean-dyndns --host home --domain example.com --key $(access_token)
 ```

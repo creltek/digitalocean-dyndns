@@ -2,7 +2,8 @@ from os import environ
 from time import sleep
 from requests import get, put
 import json
-
+import getopt
+import sys
 
 def get_public_ip():
     return get("https://api.ipify.org").text
@@ -36,15 +37,23 @@ def update_record(domain, record_id, ip, key):
     return json.loads(put(url, data=json.dumps(data), headers=headers).text)["domain_record"]
     
 if __name__ == "__main__":
+    options, args = getopt.getopt(sys.argv[1:], "h:d:k:", ["host=", "domain=", "key="])
+
+    host = ""
+    domain = ""
+    key = ""
+
+    for option, a in options:
+        if option in("-h", "--host"):
+            host = str(a)
+
+        elif option in("-d", "--domain"):
+            domain = str(a)
+
+        elif option in("-k", "--key"):
+            key = str(a)
+            
     interval = int(environ.get("INTERVAL", 300))
-    
-    for var in ["DOMAIN", "HOST", "KEY"]:
-        if var not in environ:
-            raise Exception("{} Not Defined".format(var))
-    
-    host = environ["HOST"]
-    domain = environ["DOMAIN"]
-    key = environ["KEY"]
 
     last_ip = ""
     record_id = get_record_id(domain, host, key)
@@ -60,4 +69,3 @@ if __name__ == "__main__":
         last_ip = ip
         
         sleep(interval)
- 
